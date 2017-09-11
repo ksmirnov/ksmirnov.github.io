@@ -1,8 +1,25 @@
-title: ksmirnov.github.io
-description: 
-google_analytics: 
-show_downloads: true
-theme: jekyll-theme-slate
+# Site Settings
+locale                   : "en-US"
+title                    : "Konstantin Smirnov's Blog"
+url                      : https://ksmirnov.github.io
+repository               : ksmirnov/ksmirnov.github.io
+words_per_minute         : 200
+theme                    : jekyll-theme-slate
 
-gems:
+# Site Author
+author:
+  name             : "Konstantin Smirnov"
+  avatar           :
+  location         : "San Francisco, California"
+
+# Reading Files
+include:
+  - .htaccess
+keep_files:
+  - .git
+  - .svn
+encoding: "utf-8"
+markdown_ext: "markdown,mkdown,mkdn,mkd,md"
+
+plugins:
   - jekyll-mentions
