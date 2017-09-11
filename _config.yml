@@ -23,3 +23,5 @@ markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 
 plugins:
   - jekyll-mentions
+
+theme: jekyll-theme-architect
