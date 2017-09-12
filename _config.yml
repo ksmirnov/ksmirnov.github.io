@@ -28,7 +28,7 @@ pinterest: # Add your Pinterest handle
 mailchimp: # Add your MailChimp form identifier.
 
 # Disqus
-discus_identifier: konstantin_statics # Add your discus identifier
+discus_identifier: ksmirnov-github-io # Add your discus identifier
 
 # Tracker
 analytics: # Google Analytics
