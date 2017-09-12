@@ -1,10 +1,9 @@
 # Site Settings
 locale                   : "en-US"
-title                    : "Konstantin Smirnov's Blog"
+title                    : "To be named"
 url                      : https://ksmirnov.github.io
 repository               : ksmirnov/ksmirnov.github.io
-words_per_minute         : 200
-theme                    : jekyll-theme-slate
+theme                    : jekyll-theme-leap-day
 
 # Site Author
 author:
@@ -23,5 +22,3 @@ markdown_ext: "markdown,mkdown,mkdn,mkd,md"
 
 plugins:
   - jekyll-mentions
-
-theme: jekyll-theme-architect

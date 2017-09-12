@@ -1,7 +1,4 @@
----
-author_profile: true
-layout: default
----
+### Recent blog entries
 <ul>
     {% for post in site.posts %}
     <li>
