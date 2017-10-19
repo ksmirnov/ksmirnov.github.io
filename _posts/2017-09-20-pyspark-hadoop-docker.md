@@ -7,6 +7,8 @@ img: elephanship.png
 tags: [Blog, Unix, IT, Development, Terminal]
 author: # Add name author (optional)
 ---
+# Introduction
+
 PySpark... Hadoop... Docker... Looking at the title some may ask what a game have you been up to? Well, some time ago I 
 was pulled in a project with pretty exciting stack of technologies - Google Tensorflow, Apache Spark, Cassandra etc. And
 though my role in this project wasn’t mission critical, I had a chance to dive in and play with all those things. The 
@@ -19,7 +21,15 @@ the moment when I actually stuck. It didn’t turn out to be as easy as it looke
 obsessed with the idea of getting everything done in a convenient way. Now, when I managed to set it up, I’d like to
 share my experience in case if anyone has a similar task.
 
-First of all, I needed a script or a manager to install a particular stack on a cluster. In my case these elements were:
+As a shortcut, here's a repository with a Dockerfile and a helper script:<br/>
+[https://github.com/ksmirnov/ambari_docker]<br/>
+And for those, who don't play "Im feeling lucky", I'm going to put some explanation below, starting from Dockerfile
+definition and finishing with Ambari cluster configuration.
+
+# Dockerfile
+
+As an initial point, I needed a script or a manager to install a particular stack on a cluster. In my case these 
+elements were:
 * Apache Hadoop HDFS with YARN resource manager
 * Apache Spark
 * Python 2.7
@@ -33,7 +43,7 @@ this OS is quite popular in corporate IT and thus it’s better in terms of supp
 OS was its version - I had to use CentOS 7, because I needed Python 2.7. CentOS 6 supports and relies to Python 2.6 and
 installing custom Python would be another issue for me.
 
-The first problem I faced was a necessity to have [systemd](https://en.wikipedia.org/wiki/Systemd) installed to run such
+The first problem I faced was a necessity to have [systemd] installed to run such
 services as *sshd* and *ntpd*. By default CentOS 7 doesn't have systemd and requires some customization, but luckily for
 me there's a systemd enabled image already available at Docker's repository:
 {% highlight bash %}
@@ -76,4 +86,70 @@ EXPOSE 22 8080 8081 8082 8083 8084 8085 8086 8087 8088
 CMD ["/usr/sbin/init"]
 {% endhighlight %}
 
-To be continued...
+# Setup script
+
+OK, when [Dockerfile] is ready, let's run everything. I'll provide a part of [install script] and put some comments
+afterwards:
+{% highlight bash %}
+
+docker build -t centos-ambari .
+docker network create ambarinet 2> /dev/null
+
+# Launch containers
+master_id=$(docker run --privileged -d --net ambarinet -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
+    -p ${PORT}:8080 -p 50070:50070 -p 19888:19888 -p 8088:8088 --name ${NODE_NAME_PREFIX}-0 centos-ambari)
+
+# Starting SSHD and NTPD services on a master node
+docker exec $NODE_NAME_PREFIX-0 systemctl start sshd
+docker exec $NODE_NAME_PREFIX-0 systemctl start ntpd
+
+echo ${master_id:0:12} > hosts
+for i in $(seq $((N-1)));
+do
+    container_id=$(docker run --privileged -d --net ambarinet -v /sys/fs/cgroup:/sys/fs/cgroup:ro \
+        --name $NODE_NAME_PREFIX-$i centos-ambari)
+
+    # Starting SSHD and NTPD services on a worker node
+    docker exec $NODE_NAME_PREFIX-$i systemctl start sshd
+    docker exec $NODE_NAME_PREFIX-$i systemctl start ntpd
+
+    echo ${container_id:0:12} >> hosts
+done
+
+# Copy the workers file to the master container
+docker cp hosts $master_id:/root
+
+# Print the private key
+echo "Copying back the private key..."
+docker cp $master_id:/root/.ssh/id_rsa .
+
+# Setup and start the Ambari server
+docker exec $NODE_NAME_PREFIX-0 ambari-server setup -s
+docker exec $NODE_NAME_PREFIX-0 ambari-server start
+
+# Print the hostnames
+echo "Using the following hostnames:"
+echo "------------------------------"
+cat hosts
+echo "------------------------------"
+
+{% endhighlight %}
+What does this bash script do:
+1. Builds a Docker image
+2. Establishes a network for th cluster
+3. Launches master node with following settings:
+   * *--privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro* - required to run systemd
+   * *-p ${PORT}:8080 -p 50070:50070 -p 19888:19888 -p 8088:8088* - exposing some important ports
+   * *--net ambarinet* - connected to *ambarinet* network
+4. Starts SSHD and NTPD on master node
+5. Repeats steps 3 and 4 for every other node in the cluster
+6. Exposes SSH key to provide SSH-less access
+7. Starts Ambari server setup on master node
+8. Prints Docker hosts
+
+[//]: # (Link references)
+
+[systemd]: https://en.wikipedia.org/wiki/Systemd "Wikipedia: systemd"
+[https://github.com/ksmirnov/ambari_docker]: https://github.com/ksmirnov/ambari_docker "Ambari on Docker"
+[Dockerfile]: https://github.com/ksmirnov/ambari_docker/blob/master/Dockerfile "Dockerfile"
+[install script]: https://github.com/ksmirnov/ambari_docker/blob/master/deploy_cluster.sh "Install script"

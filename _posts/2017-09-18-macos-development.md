@@ -52,12 +52,12 @@ ssh-keygen
 
 ## Step 3: Getting other tools installed
 Here's more links to useful tools.
-* Anaconda: https://www.anaconda.com/download/#macos
-* IntelliJ IDEA: https://www.jetbrains.com/idea/download/#section=mac
-* PyCharm: https://www.jetbrains.com/pycharm/download/#section=mac
-* Docker: https://www.docker.com/docker-mac
-* DBeaver: https://dbeaver.jkiss.org/download/
-* MuCommander: http://www.mucommander.com/ 
+* Anaconda: [https://www.anaconda.com/download/#macos]
+* IntelliJ IDEA: [https://www.jetbrains.com/idea/download/#section=mac]
+* PyCharm: [https://www.jetbrains.com/pycharm/download/#section=mac]
+* Docker: [https://www.docker.com/docker-mac]
+* DBeaver: [https://dbeaver.jkiss.org/download/]
+* MuCommander: [http://www.mucommander.com/]
 
 ## Commands: Common
 {% highlight bash %}
@@ -114,3 +114,12 @@ docker rm $(docker ps -a -q -f status=exited)
 # Getting into Docker containers
 docker exec -it <mycontainer> bash
 {% endhighlight %}
+
+[//]: # (Link references)
+
+[https://www.anaconda.com/download/#macos]: https://www.anaconda.com/download/#macos "Anaconda"
+[https://www.jetbrains.com/idea/download/#section=mac]: https://www.jetbrains.com/idea/download/#section=mac "IntelliJ IDEA"
+[https://www.jetbrains.com/pycharm/download/#section=mac]: https://www.jetbrains.com/pycharm/download/#section=mac "PyCharm"
+[https://www.docker.com/docker-mac]: https://www.docker.com/docker-mac "Docker"
+[https://dbeaver.jkiss.org/download/]: https://dbeaver.jkiss.org/download/ "DBeaver"
+[http://www.mucommander.com/]: http://www.mucommander.com/ "MuCommander"
