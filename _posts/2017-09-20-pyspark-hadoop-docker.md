@@ -52,6 +52,7 @@ RUN yum install -y --quiet epel-release \
     openssh-server \
     sudo \
     wget
+{% endhighlight %}
 
 Now, when all the essentials are installed, it's time to work on SSH. Ambari needs a key-less SSH access, so let's 
 generate a key, authorize it and get a container ready for an intervention:
