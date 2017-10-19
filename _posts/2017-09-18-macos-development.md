@@ -7,7 +7,7 @@ img: terminal.jpg
 tags: [Blog, Unix, IT, Development, Terminal]
 author: # Add name author (optional)
 ---
-Did you ever happen to prepare a new laptop or desktop for development? I don't know about you, but it's a nightmare for 
+Have you ever happened to prepare a new laptop or desktop for development? I don't know about you, but it's a nightmare for 
 me! Everything looks and feels so unfamiliar and inconvenient. Recently my belongings in the office were complemented
 with a Mac Pro and initially I wanted to use it as a cluster host only, but then I decided to connect it to a monitor,
 buy a keyboard and a mouse for convenience, install some usefull command line tools... and that's how it all started!
