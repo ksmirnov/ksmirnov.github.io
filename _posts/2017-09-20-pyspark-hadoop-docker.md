@@ -36,10 +36,13 @@ installing custom Python would be another issue for me.
 The first problem I faced was a necessity to have [systemd](https://en.wikipedia.org/wiki/Systemd) installed to run such
 services as *sshd* and *ntpd*. By default CentOS 7 doesn't have systemd and requires some customization, but luckily for
 me there's a systemd enabled image already available at Docker's repository:
->FROM centos/systemd
+{% highlight bash %}
+FROM centos/systemd
+{% endhighlight %}
 
 Next, I needed to install some essentials to get everything work:
->RUN yum install -y --quiet epel-release \
+{% highlight bash %}
+RUN yum install -y --quiet epel-release \
  && yum -y --quiet update \
  && yum install -y --quiet \
     bzip2 \
@@ -52,18 +55,22 @@ Next, I needed to install some essentials to get everything work:
 
 Now, when all the essentials are installed, it's time to work on SSH. Ambari needs a key-less SSH access, so let's 
 generate a key, authorize it and get a container ready for an intervention:
->RUN echo 'root:hortonworks' | chpasswd \
+{% highlight bash %}
+RUN echo 'root:hortonworks' | chpasswd \
   && ssh-keygen -t rsa -f ~/.ssh/id_rsa -P '' \
   && cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys \
   && sed -i '/pam_loginuid.so/c session    optional     pam_loginuid.so'  /etc/pam.d/sshd \
   && echo -e "Host *\n StrictHostKeyChecking no" >> /etc/ssh/ssh_config
+{% endhighlight %}
 
 And the last few steps in a Docker file to install Ambari on a container, expose some ports and run systemd:
->RUN wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.5.2.0/ambari.repo \
->    -O /etc/yum.repos.d/ambari.repo \
-> && yum repolist \
-> && yum install -y ambari-server
->
->EXPOSE 22 8080 8081 8082 8083 8084 8085 8086 8087 8088
->
->CMD ["/usr/sbin/init"]
+{% highlight bash %}
+RUN wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.5.2.0/ambari.repo \
+    -O /etc/yum.repos.d/ambari.repo \
+ && yum repolist \
+ && yum install -y ambari-server
+
+EXPOSE 22 8080 8081 8082 8083 8084 8085 8086 8087 8088
+
+CMD ["/usr/sbin/init"]
+{% endhighlight %}
