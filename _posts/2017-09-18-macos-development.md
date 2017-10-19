@@ -7,20 +7,19 @@ img: terminal.jpg
 tags: [Blog, Unix, IT, Development, Terminal]
 author: # Add name author (optional)
 ---
-Have you ever happened to prepare a new laptop or desktop for development? I don't know about you, but it's a nightmare for 
-me! Everything looks and feels so unfamiliar and inconvenient. Recently my belongings in the office were complemented
+Have you ever happened to prepare a new laptop or desktop for development? I don't know about you, but it's a nightmare
+for me! Everything looks and feels so unfamiliar and inconvenient. Recently my belongings in the office were complemented
 with a Mac Pro and initially I wanted to use it as a cluster host only, but then I decided to connect it to a monitor,
-buy a keyboard and a mouse for convenience, install some usefull command line tools... and that's how it all started!
+buy a keyboard and a mouse for convenience, install some useful command line tools... and that's how it all started!
 I'm really glad it's all behind right now. I turned it into a workstation and I'm writing this blog entry using this
 black canister actually. But what surprised me when I was half way here, that I wasted so much time trying to remember
 proper bash command (terminal history was so empty!), searching for download links and etc. So, I decided to create my 
-own macOS cheat sheet featuring Homebrew, Git, Maven, Vim, IDEs and many more, because maybe anybody is looking for the
+own macOS cheat sheet featuring Homebrew, Git, Maven, Vim, IDEs and many more, because maybe somebody is looking for the
 same steps right now?
 
 **Note: the list is subject to change at any time as my memories come :D** 
 
-## Step 1: Homebrew and bash completion
-Absolutely a must-have package for macOS developers.
+## Step 1: Homebrew and bash completion along with some essential tools
 {% highlight bash %}
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
@@ -73,6 +72,16 @@ history N
 
 # Getting an output of a file copied to clipboard
 cat ~/.ssh/id_rsa.pub | pbcopy
+
+# Finding a file by regex pattern
+find . -regex '.*md'
+
+# Find a file containing a pattern
+grep -e '.*png' *
+
+# Find a file by name and content
+find . -regex '.*md' -exec grep -l -e 'Tensorflow' {} \;
+
 {% endhighlight %}
 
 ## Commands: Java

@@ -14,10 +14,10 @@ project’s outcome is a visual search engine, that seeks for similar images in 
 applications for different tasks. One of these parts is responsible for images vectorization and preparing data for 
 Cassandra with a help of Tensorflow and PySpark. I can’t say I took a significant part in this application’s 
 development, but I had a necessity to run it, optimize cluster’s parameters, check output data and etc. That was the 
-moment when I came to the idea of setting my local Hadoop cluster. Mostly for convenience. And that was the moment when 
-I actually stuck. It didn’t turn out to be as easy as it looked at first glance and I became almost obsessed with the 
-idea of getting everything done in a convenient way. Now, when I managed to set it up, I’d like to share my experience 
-in case if anyone has a similar task.
+moment when I came up with the idea of setting my local Hadoop cluster on Docker. Mostly for convenience. And that was
+the moment when I actually stuck. It didn’t turn out to be as easy as it looked at first glance and I became almost
+obsessed with the idea of getting everything done in a convenient way. Now, when I managed to set it up, I’d like to
+share my experience in case if anyone has a similar task.
 
 First of all, I needed a script or a manager to install a particular stack on a cluster. In my case these elements were:
 * Apache Hadoop HDFS with YARN resource manager
@@ -75,3 +75,5 @@ EXPOSE 22 8080 8081 8082 8083 8084 8085 8086 8087 8088
 
 CMD ["/usr/sbin/init"]
 {% endhighlight %}
+
+To be continued...
