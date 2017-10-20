@@ -1759,3 +1759,7 @@ pre code {
     margin: 0 0 15px;
   }
 }
+
+.framed {
+  border: 1px solid black;
+}

@@ -74,6 +74,23 @@ RUN echo 'root:hortonworks' | chpasswd \
   && echo -e "Host *\n StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 {% endhighlight %}
 
+Following section will install Anaconda and PySpark. Most of the dependencies of my job were delivered in a ZIP file
+with Python eggs inside, but I needed to have some of them installed locally to be able to submit PySpark driver:
+{% highlight bash %}
+# Installing Miniconda & PySpark
+RUN wget -nv http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O ~/miniconda.sh \
+ && bash ~/miniconda.sh -b -p $HOME/miniconda \
+ && rm -f ~/miniconda.sh
+
+# Setting environment variables
+ENV PATH "$HOME/miniconda/bin:$PATH"
+ENV PYTHON "$HOME/miniconda/bin/python"
+ENV PYTHONPATH "$PYTHON"
+
+RUN ~/miniconda/bin/conda update -y conda \
+ && ~/miniconda/bin/conda install -y pyspark
+{% endhighlight %}
+
 And the last few steps in a Docker file to install Ambari on a container, expose some ports and run systemd:
 {% highlight bash %}
 RUN wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.5.2.0/ambari.repo \
@@ -147,9 +164,49 @@ What does this bash script do:
 7. Starts Ambari server setup on master node
 8. Prints Docker hosts
 
+# Ambari configuration
+As soon as you see a message like this,
+````
+Using the following hostnames:
+------------------------------
+410fb41cc857
+ed5ff538cd2c
+255d4301cd5d
+------------------------------
+````
+it's time put a terminal aside and go to [Ambari UI].<br/>
+
+First of all, let's define user's credentials for Ambari. Once you fill in Username and Password, you'll automatically
+create a new user.
+![Login page]({{"/assets/img/ambari/login.png"|absolute_url}}){: .framed}
+
+Next - welcome page. Here you just need to click "Launch install wizard" to proceed further.
+![Welcome page]({{"/assets/img/ambari/welcome.png"|absolute_url}}){: .framed}
+
+Let's define a nme for the cluster.
+![Get started page]({{"/assets/img/ambari/cluster_name.png"|absolute_url}}){: .framed}
+
+Ambari will ask to choose HDP version, which is 2.6.2 in this case. There's a possibility to use local repository, but I
+didn't need any custom builds, so I went with public one.
+![Select version page]({{"/assets/img/ambari/hdp.png"|absolute_url}}){: .framed}
+
+Almost there. Now Ambari asks for cluster's hosts. Remember the output message from install script? Now it's time to 
+copy and paste these names like shown on the picture below. The same should be done for an SSH key in order to provide
+Ambari an access to cluster's nodes.
+![Install options page]({{"/assets/img/ambari/hosts.png"|absolute_url}}){: .framed}
+
+![Confirm hosts page]({{"/assets/img/ambari/confirm.png"|absolute_url}}){: .framed}
+
+And... voila! Ambari registered hosts and now it's ready to install services. I could continue with this guide, but
+that's a completely different story and it really depends on user's needs. For example, I needed HDFS, ResourceManager 
+and Spark only so I'll just leave a link to the official 
+Ambari documentation [HERE] and wish you having fun with your local Ambari cluster ;)
+
 [//]: # (Link references)
 
 [systemd]: https://en.wikipedia.org/wiki/Systemd "Wikipedia: systemd"
 [https://github.com/ksmirnov/ambari_docker]: https://github.com/ksmirnov/ambari_docker "Ambari on Docker"
 [Dockerfile]: https://github.com/ksmirnov/ambari_docker/blob/master/Dockerfile "Dockerfile"
 [install script]: https://github.com/ksmirnov/ambari_docker/blob/master/deploy_cluster.sh "Install script"
+[HERE]: https://ambari.apache.org/1.2.1/installing-hadoop-using-ambari/content/ch03s05.html "Ambari docs"
+[Ambari UI]: http://localhost:8080/
