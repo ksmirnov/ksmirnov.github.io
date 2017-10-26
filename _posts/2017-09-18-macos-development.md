@@ -82,6 +82,9 @@ grep -e '.*png' *
 # Find a file by name and content
 find . -regex '.*md' -exec grep -l -e 'Tensorflow' {} \;
 
+# Copy from/to remote server with SHH
+scp user@from-host:/path/to/source.file user@to-host:/path/to/destination.file
+
 {% endhighlight %}
 
 ## Commands: Java
