@@ -4,7 +4,7 @@ title:  PySpark... Hadoop... Docker?
 date:   2017-10-17 11:41:00 -0800
 description: A guide for getting Docker cluster ready for PySpark jobs
 img: elephanship.png
-tags: [Blog, Unix, IT, Development, Terminal]
+tags: [Blog, IT, Development, Spark, Hadoop, Docker]
 author: # Add name author (optional)
 ---
 # Introduction
