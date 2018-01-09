@@ -85,6 +85,9 @@ find . -regex '.*md' -exec grep -l -e 'Tensorflow' {} \;
 # Copy from/to remote server with SHH
 scp user@from-host:/path/to/source.file user@to-host:/path/to/destination.file
 
+# Establish SOCKS 5 proxy to access a closed port (for example 18080)
+ssh -D 18080 -f -C -q -N user@host
+
 {% endhighlight %}
 
 ## Commands: Java
