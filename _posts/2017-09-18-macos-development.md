@@ -119,6 +119,9 @@ docker rm $(docker ps -a -q -f status=exited)
 
 # Getting into Docker containers
 docker exec -it <mycontainer> bash
+
+# Remove an image from local Docker repository
+docker rmi <image>
 {% endhighlight %}
 
 [//]: # (Link references)
