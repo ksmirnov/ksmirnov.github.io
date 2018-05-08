@@ -100,6 +100,9 @@ java -cp lib/mypackage.jar Main arg1 arg2
 
 # Running a JAR
 java -jar lib/mypackage.jar arg1 arg2
+
+# Building Maven project using 1.5 threads per physical core
+mvn -T 1.5C clean install
 {% endhighlight %}
 
 ## Commands: Docker
