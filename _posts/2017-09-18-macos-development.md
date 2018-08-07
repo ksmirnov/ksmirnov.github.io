@@ -28,11 +28,7 @@ brew upgrade
 brew install vim git maven
 brew install bash-completion maven-completion pip-completion docker-completion
 
-brew tap homebrew/completions
-
-echo "if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
-fi" >> ~/.bash_profile
+echo "[ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion" >> ~/.bash_profile
 
 brew cleanup
 
